@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 
 const String ALERT_DIALOG_TITLE = "Alert";
 
-const String BASE_URL1 = "dev.techstreet.in";
-const String API_PATH1 = "/rwa/public/api";
-const String URL1 = "https://dev.techstreet.in/rwa/public/api/";
+const String BASE_URL = "dev.techstreet.in";
+const String API_PATH = "/rwa/public/api";
+const String URL = "https://dev.techstreet.in/rwa/public/api/";
 
-const String BASE_URL = "member.avrwanoida.com";
-const String API_PATH = "/api";
-const String URL = "https://member.avrwanoida.com/api/";
+// const String BASE_URL = "member.avrwanoida.com";
+// const String API_PATH = "/api";
+// const String URL = "https://member.avrwanoida.com/api/";
 
 final String path = 'assets/images/';
 
@@ -26,5 +26,5 @@ final List<Draw> drawerItems = [
 
 class Draw {
   final String title;
-  Draw({ this.title});
+  Draw({this.title});
 }

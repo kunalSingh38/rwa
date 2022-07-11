@@ -24,7 +24,7 @@ class _HomePageState extends State<ProfilePage> {
   String mobile = '';
   String member_type = '';
   String house_number = '';
-   Future<dynamic> _profiles;
+  Future<dynamic> _profiles;
   final nameController = TextEditingController();
   final mobileController = TextEditingController();
   final emailController = TextEditingController();
@@ -49,23 +49,19 @@ class _HomePageState extends State<ProfilePage> {
       _profiles = _profileData();
     });
   }
-  Future _profileData() async {
 
-    final msg = jsonEncode({
-      "member_id":user_id.toString()
-    });
+  Future _profileData() async {
+    final msg = jsonEncode({"member_id": user_id.toString()});
     Map<String, String> headers = {
       'Accept': 'application/json',
       'Authorization': 'Bearer $api_token',
     };
     var response = await http.post(
       new Uri.https(BASE_URL, API_PATH + "/dashboard"),
-      body: {
-        "member_id":user_id.toString()
-      },
+      body: {"member_id": user_id.toString()},
       headers: headers,
     );
-     print(msg);
+    print(msg);
     if (response.statusCode == 200) {
       var data = json.decode(response.body);
       return data;
@@ -74,48 +70,53 @@ class _HomePageState extends State<ProfilePage> {
     }
   }
 
-  TextStyle normalText5 = GoogleFonts.montserrat(fontSize: 20, fontWeight: FontWeight.w500, color: Colors.black);
+  TextStyle normalText5 = GoogleFonts.montserrat(
+      fontSize: 20, fontWeight: FontWeight.w500, color: Colors.black);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: Color(0xfff5f5f5),
-        appBar:widget.modal != ""?AppBar(
-          elevation: 0.0,
-          centerTitle: true,
-          title: Container(
-            child: Text("Profile", style: normalText5),
-          ),
-          leading:widget.modal != ""?  InkWell(
-              onTap: (){
-                Navigator.of(context).pop(false);
-              },
-              child: Icon(Icons.arrow_back,color: Colors.black54,)):
-          InkWell(
-            child: Row(children: <Widget>[
-              IconButton(
-                icon: Image(
-                  image: AssetImage("assets/images/nav_icon.png"),
-                  height: 22.0,
-                  width: 22.0,
+        appBar: widget.modal != ""
+            ? AppBar(
+                elevation: 0.0,
+                centerTitle: true,
+                title: Container(
+                  child: Text("Profile", style: normalText5),
                 ),
-                onPressed: () {
-                  Navigator.of(context).pop(false);
-                },
-              ),
-            ]),
-          ),
-          flexibleSpace: Container(
-            height: 100,
-            color: Color(0xffcbf3eb),
-          ),
-          actions: <Widget>[
-
-          ],
-          iconTheme: IconThemeData(
-            color: Colors.white, //change your color here
-          ),
-          backgroundColor: Colors.transparent,
-        ):null,
+                leading: widget.modal != ""
+                    ? InkWell(
+                        onTap: () {
+                          Navigator.of(context).pop(false);
+                        },
+                        child: Icon(
+                          Icons.arrow_back,
+                          color: Colors.black54,
+                        ))
+                    : InkWell(
+                        child: Row(children: <Widget>[
+                          IconButton(
+                            icon: Image(
+                              image: AssetImage("assets/images/nav_icon.png"),
+                              height: 22.0,
+                              width: 22.0,
+                            ),
+                            onPressed: () {
+                              Navigator.of(context).pop(false);
+                            },
+                          ),
+                        ]),
+                      ),
+                flexibleSpace: Container(
+                  height: 100,
+                  color: Color(0xffcbf3eb),
+                ),
+                actions: <Widget>[],
+                iconTheme: IconThemeData(
+                  color: Colors.white, //change your color here
+                ),
+                backgroundColor: Colors.transparent,
+              )
+            : null,
         body: Stack(
           children: <Widget>[
             ClipPath(
@@ -152,14 +153,12 @@ class _HomePageState extends State<ProfilePage> {
           var errorCode = snapshot.data['ErrorCode'];
           var response = snapshot.data['userData'];
           if (errorCode == 0) {
-
-            return  Container(
+            return Container(
               margin: EdgeInsets.only(right: 8.0, left: 8, top: height * 0.09),
               child: Column(children: <Widget>[
                 Align(
                   alignment: Alignment.topLeft,
                   child: Container(
-
                     child: Text(
                       "Name",
                       textAlign: TextAlign.left,
@@ -208,7 +207,7 @@ class _HomePageState extends State<ProfilePage> {
                             ),
                           ),
                           hintStyle:
-                          TextStyle(color: Color(0xff686868), fontSize: 16),
+                              TextStyle(color: Color(0xff686868), fontSize: 16),
                           fillColor: Color(0xffffffff),
                           filled: true)),
                 ),
@@ -216,7 +215,6 @@ class _HomePageState extends State<ProfilePage> {
                 Align(
                   alignment: Alignment.topLeft,
                   child: Container(
-
                     child: Text(
                       "Member Id",
                       textAlign: TextAlign.left,
@@ -236,7 +234,8 @@ class _HomePageState extends State<ProfilePage> {
                       decoration: InputDecoration(
                           suffixIcon: InkWell(
                             onTap: () {},
-                            child: Icon(Icons.perm_identity, color: Colors.black54),
+                            child: Icon(Icons.perm_identity,
+                                color: Colors.black54),
                           ),
                           isDense: true,
                           contentPadding: EdgeInsets.fromLTRB(10, 30, 30, 0),
@@ -265,7 +264,7 @@ class _HomePageState extends State<ProfilePage> {
                             ),
                           ),
                           hintStyle:
-                          TextStyle(color: Color(0xff686868), fontSize: 16),
+                              TextStyle(color: Color(0xff686868), fontSize: 16),
                           fillColor: Color(0xffffffff),
                           filled: true)),
                 ),
@@ -273,7 +272,6 @@ class _HomePageState extends State<ProfilePage> {
                 Align(
                   alignment: Alignment.topLeft,
                   child: Container(
-
                     child: Text(
                       "Email Id",
                       textAlign: TextAlign.left,
@@ -285,7 +283,7 @@ class _HomePageState extends State<ProfilePage> {
                 Container(
                   child: TextFormField(
                       enabled: false,
-                      initialValue: response['email']??'',
+                      initialValue: response['email'] ?? '',
                       keyboardType: TextInputType.text,
                       cursorColor: Color(0xff000000),
                       style: normalText6,
@@ -322,7 +320,7 @@ class _HomePageState extends State<ProfilePage> {
                             ),
                           ),
                           hintStyle:
-                          TextStyle(color: Color(0xff686868), fontSize: 16),
+                              TextStyle(color: Color(0xff686868), fontSize: 16),
                           fillColor: Color(0xffffffff),
                           filled: true)),
                 ),
@@ -330,7 +328,6 @@ class _HomePageState extends State<ProfilePage> {
                 Align(
                   alignment: Alignment.topLeft,
                   child: Container(
-
                     child: Text(
                       "Mobile No.",
                       textAlign: TextAlign.left,
@@ -342,7 +339,7 @@ class _HomePageState extends State<ProfilePage> {
                 Container(
                   child: TextFormField(
                       enabled: false,
-                      initialValue: response['mobile']??'',
+                      initialValue: response['mobile'] ?? '',
                       keyboardType: TextInputType.text,
                       cursorColor: Color(0xff000000),
                       style: normalText6,
@@ -350,7 +347,8 @@ class _HomePageState extends State<ProfilePage> {
                       decoration: InputDecoration(
                           suffixIcon: InkWell(
                             onTap: () {},
-                            child: Icon(Icons.phone_android, color: Colors.black54),
+                            child: Icon(Icons.phone_android,
+                                color: Colors.black54),
                           ),
                           isDense: true,
                           contentPadding: EdgeInsets.fromLTRB(10, 30, 30, 0),
@@ -379,12 +377,11 @@ class _HomePageState extends State<ProfilePage> {
                             ),
                           ),
                           hintStyle:
-                          TextStyle(color: Color(0xff686868), fontSize: 16),
+                              TextStyle(color: Color(0xff686868), fontSize: 16),
                           fillColor: Color(0xffffffff),
                           filled: true)),
                 ),
                 const SizedBox(height: 15.0),
-
               ]),
             );
           } else {
@@ -396,6 +393,7 @@ class _HomePageState extends State<ProfilePage> {
       },
     );
   }
+
   Widget _buildAccountDetail() {
     return Container(
       padding: EdgeInsets.only(
@@ -406,12 +404,16 @@ class _HomePageState extends State<ProfilePage> {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Text(
-            member_name,
-            style: TextStyle(
-              fontSize: 17.0,
-              color: Colors.black87,
-              fontWeight: FontWeight.w400,
+          SizedBox(
+            width: MediaQuery.of(context).size.width / 1.8,
+            child: Text(
+              member_name,
+              // maxLines: 2,
+              style: TextStyle(
+                fontSize: 17.0,
+                color: Colors.black87,
+                fontWeight: FontWeight.w400,
+              ),
             ),
           ),
           const SizedBox(height: 4.0),
@@ -440,7 +442,6 @@ class _HomePageState extends State<ProfilePage> {
             ],
           ),
           const SizedBox(height: 4.0),
-
           Text(
             house_number,
             style: TextStyle(
@@ -453,7 +454,7 @@ class _HomePageState extends State<ProfilePage> {
           Material(
             color: Colors.transparent,
             child: InkWell(
-              onTap: ()  {
+              onTap: () {
                 Navigator.pushNamed(
                   context,
                   '/edit-profile',
@@ -462,13 +463,10 @@ class _HomePageState extends State<ProfilePage> {
               child: Align(
                 alignment: Alignment.topRight,
                 child: Container(
-                  padding: EdgeInsets.symmetric(
-                      vertical: 5, horizontal: 15),
+                  padding: EdgeInsets.symmetric(vertical: 5, horizontal: 15),
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(5),
-                      color: Color(0xff54d3c0)
-
-                  ),
+                      color: Color(0xff54d3c0)),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
