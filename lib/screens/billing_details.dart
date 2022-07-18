@@ -4,17 +4,11 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:http_parser/http_parser.dart';
-import 'package:mime/mime.dart';
-import 'package:jiffy/jiffy.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
 import 'package:rwa/components/general.dart';
 import 'package:rwa/screens/payment_success_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:intl/intl.dart';
-import 'package:toggle_switch/toggle_switch.dart';
 import '../constants.dart';
 
 class BillingDetails extends StatefulWidget {
@@ -41,7 +35,7 @@ class _HomePageState extends State<BillingDetails> {
   String penalty_amt = "";
   String total_arrear_amount = "";
   String net_pay_arrears = "";
-  String for_months = "";
+  //String for_months = "";
   String subscription_amt = "";
   String discount = "";
   String net_subscription = "";
@@ -275,12 +269,14 @@ class _HomePageState extends State<BillingDetails> {
       new Uri.https(BASE_URL, API_PATH + "/session-year"),
       headers: headers,
     );
-    // if (jsonDecode(response.body)['ErrorCode'] == 0) {
-    //   setState(() {
-    //     payForMonthList.addAll(jsonDecode(response.body)['Response']);
-    //     payForMonthListVal = payForMonthList[0]['session_name'].toString();
-    //   });
-    // }
+    print(response.body);
+    if (jsonDecode(response.body)['ErrorCode'] == 0) {
+      setState(() {
+        payForMonthList.add({"month_name":"Select","session_name":"0"});
+        payForMonthList.addAll(jsonDecode(response.body)['Response']);
+        payForMonthListVal = "0";
+      });
+    }
   }
 
   Future _getActivityCategories() async {
@@ -324,7 +320,7 @@ class _HomePageState extends State<BillingDetails> {
         penalty_amt = data['Response']['penalty_amt'].toString();
         total_arrear_amount = data['Response']['total_arrear'].toString();
         net_pay_arrears = data['Response']['net_pay_arrears'].toString();
-        for_months = "1";
+        //for_months = "0";
         subscription_amt =
             data['Response']['total_subscription_amt'].toString();
         discount = data['Response']['total_dis'].toString();
@@ -610,8 +606,7 @@ class _HomePageState extends State<BillingDetails> {
                                         color: Colors.black54),
                                   ),
                                   isDense: true,
-                                  contentPadding:
-                                      EdgeInsets.fromLTRB(10, 30, 30, 0),
+                                  contentPadding: EdgeInsets.fromLTRB(7, 30, 30, 0),
                                   border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(10.0),
                                     borderSide: BorderSide(
@@ -917,7 +912,7 @@ class _HomePageState extends State<BillingDetails> {
                           builder: (FormFieldState state) {
                             return InputDecorator(
                               decoration: InputDecoration(
-                                  fillColor: Colors.white,
+                                  fillColor: Color(0xffcbf3eb),
                                   filled: true,
                                   isDense: true,
                                   labelText: "",
@@ -938,7 +933,8 @@ class _HomePageState extends State<BillingDetails> {
                                   items: payForMonthList.map((value) {
                                     return DropdownMenuItem(
                                       value: value['session_name'].toString(),
-                                      child: Text(
+                                      child:value['session_name'].toString()=="0"?Text(
+                                          value['month_name'].toString()):  Text(
                                           value['month_name'].toString() +
                                               ", " +
                                               value['session_name'].toString()),
@@ -1516,9 +1512,9 @@ class _HomePageState extends State<BillingDetails> {
                         textColor: Colors.white,
                         color: Color(0xff54d3c0),
                         onPressed: () async {
-                          if (payForMonthListVal.toString().length == 0) {
+                          if(payForMonthListVal.toString() == "0") {
                             Fluttertoast.showToast(
-                                msg: "Please enter month",
+                                msg: "Please select month for pay",
                                 toastLength: Toast.LENGTH_SHORT,
                                 gravity: ToastGravity.CENTER,
                                 timeInSecForIosWeb: 1,
